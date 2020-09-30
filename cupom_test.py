@@ -2,6 +2,8 @@
 
 import cupom
 import pytest
+from cupom import Loja
+
 
 
 def verifica_campo_obrigatorio_objeto(mensagem_esperada, loja):
@@ -9,7 +11,6 @@ def verifica_campo_obrigatorio_objeto(mensagem_esperada, loja):
         cupom.dados_loja_objeto(loja)
     the_exception = excinfo.value
     assert mensagem_esperada == str(the_exception)
-
 
 # Todas as variaveis preenchidas
 NOME_LOJA = "Loja 1"
@@ -251,10 +252,8 @@ IE: 123456789"""
 
 
 def test_valida_observacao():
-    assert cupom.dados_loja_objeto(LOJA_OBSERVACAO_NULA)
-    == TEXTO_ESPERADO_SEM_OBSERVACAO
-    assert cupom.dados_loja_objeto(LOJA_OBSERVACAO_VAZIA)
-    == TEXTO_ESPERADO_SEM_OBSERVACAO
+    assert cupom.dados_loja_objeto(LOJA_OBSERVACAO_NULA) == TEXTO_ESPERADO_SEM_OBSERVACAO
+    assert cupom.dados_loja_objeto(LOJA_OBSERVACAO_VAZIA) == TEXTO_ESPERADO_SEM_OBSERVACAO
 
 
 LOJA_CNPJ_NULO = cupom.Loja(NOME_LOJA, LOGRADOURO, NUMERO, COMPLEMENTO,
@@ -302,11 +301,10 @@ IE: 123456789'''
 
 
 def test_valida_numero_e_complemento():
-    assert cupom.dados_loja_objeto(LOJA_SEM_NUMERO_SEM_COMPLEMENTO)
-    == TEXTO_ESPERADO_SEM_NUMERO_SEM_COMPLEMENTO
+    assert cupom.dados_loja_objeto(LOJA_SEM_NUMERO_SEM_COMPLEMENTO) == TEXTO_ESPERADO_SEM_NUMERO_SEM_COMPLEMENTO
 
 
-LOJA_SEM_NUMERO_SEM_COMPLEMENTO_SEM_BAIRRO = Loja(NOME_LOJA, LOGRADOURO, None,
+LOJA_SEM_NUMERO_SEM_COMPLEMENTO_SEM_BAIRRO = cupom.Loja(NOME_LOJA, LOGRADOURO, None,
                                                   None, None, MUNICIPIO,
                                                   ESTADO, CEP, TELEFONE,
                                                   OBSERVACAO, CNPJ,
@@ -322,30 +320,37 @@ IE: 123456789'''
 
 
 def test_valida_numero_complemento_e_bairro():
-    assert cupom.dados_loja_objeto(LOJA_SEM_NUMERO_SEM_COMPLEMENTO_SEM_BAIRRO)
-    == TEXTO_ESPERADO_SEM_NUMERO_SEM_COMPLEMENTO_SEM_BAIRRO
+    assert cupom.dados_loja_objeto(LOJA_SEM_NUMERO_SEM_COMPLEMENTO_SEM_BAIRRO) == TEXTO_ESPERADO_SEM_NUMERO_SEM_COMPLEMENTO_SEM_BAIRRO
 
+TEXTO_ESPERADO_TEST_EXERCICIO2_CUSTOMIZADO = '''Boa vista Flores
+Rua Jardim Peres, 122 EUC F30/31/44
+Centro - Monteiro - PB
+CEP:585000000 Tel (99) 9999999
+LOja 122 (PDB)
+CNPJ: 22.300.999.555/0110-56
+IE: 432.118.667.777'''
 
 def test_exercicio2_customizado():
 
     # Defina seus próprios valores para as variáveis a seguir
-    nome_loja = ""
-    logradouro = ""
-    numero = 0
-    complemento = ""
-    bairro = ""
-    municipio = ""
-    estado = ""
-    cep = ""
-    telefone = ""
-    observacao = ""
-    cnpj = ""
-    inscricao_estadual = ""
+    nome_loja = "Boa vista Flores"
+    logradouro = "Rua Jardim Peres"
+    numero = 122
+    complemento = "EUC F30/31/44"
+    bairro = "Centro"
+    municipio = "Monteiro"
+    estado = "PB"
+    cep = "585000000"
+    telefone = "(99) 9999999"
+    observacao = "LOja 122 (PDB)"
+    cnpj = "22.300.999.555/0110-56"
+    inscricao_estadual = "432.118.667.777"
 
     lojaCustomizada = cupom.Loja(nome_loja, logradouro, numero, complemento,
                                  bairro, municipio, estado, cep, telefone,
                                  observacao, cnpj, inscricao_estadual)
 
     # E atualize o texto esperado abaixo
-    assert (cupom.dados_loja_objeto(lojaCustomizada) == """
-""")
+    assert (cupom.dados_loja_objeto(lojaCustomizada) == TEXTO_ESPERADO_TEST_EXERCICIO2_CUSTOMIZADO)
+
+   
